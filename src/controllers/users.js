@@ -10,9 +10,9 @@ exports.signup = async (req, res, next) => {
     newUser.data_criacao = new Date();
     newUser.ultimo_login = newUser.data_criacao;
 
-    await newUser.setPassword(req.body.senha);  
+    await newUser.setPassword(req.body.senha);
     const token = await newUser.setToken();
-    
+
     newUser.save()
         .then(user => {
             user.token = token;
@@ -24,8 +24,22 @@ exports.signup = async (req, res, next) => {
 
 };
 
-exports.signin = (req, res, next) =>{
+exports.signin = (req, res, next) => {
 
+    User.findOne({ email: req.body.email }).then(async user => {
 
-
-}
+        // Verify : user exist and valid password          
+        if (user && await user.signIn(req.body.senha, token = {})) {                          
+            user.token = token.valor;  // Recover new token
+            res.status(201).send(user);  
+        }
+        else {
+            const err = new Error('Usuário e/ou senha inválidos');
+            err['status'] = 401;
+            throw err;
+        }
+    })
+        .catch(err => {
+            next(err);
+        })
+};

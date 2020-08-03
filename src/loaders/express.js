@@ -22,7 +22,7 @@ module.exports = (app) => {
 
   // catch 404 and forward to error handler
   app.use((req, res, next) => {
-    const err = new Error({mensagem : 'Endpoint não encontrado'});
+    const err = new Error('Endpoint não encontrado');
     err['status'] = 404;
     next(err);
   });
