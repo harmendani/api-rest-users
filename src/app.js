@@ -17,6 +17,7 @@ async function startServer() {
       console.log(` \n
       ################################################
       🛡️  Server listening on port: ${config.port} 🛡️ 
+      🛡️  MongoDB on : ${config.dataBase}:27017 🛡️ 
       ################################################
     `);
     });

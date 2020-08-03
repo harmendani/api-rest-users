@@ -11,6 +11,6 @@ if (!envFound) {
 
 module.exports = {
     port: parseInt(process.env.PORT),
-    dataBaseName: process.env.DATABASE_NAME,
+    dataBase: process.env.DATABASE_NAME,
     secretJwt: process.env.JWT_SECRET,
  };
