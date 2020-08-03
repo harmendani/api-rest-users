@@ -13,6 +13,8 @@
     "mongoose": "^5.9.26"
   },
   "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
     "morgan": "^1.10.0"
   },
   "scripts": {

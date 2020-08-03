@@ -4,12 +4,11 @@ const bodyParser = require('body-parser');
 const routes = require('../routes/index');
 
 module.exports = (app) => {
-
   // Setup and config express app
   app.get('/status', (req, res) => {
-    res.status(200).send({mensagem : 'API is Online!'});
+    res.status(200).send({mensagem: 'API is Online!'});
   });
-  
+
   app.set('trust proxy', true);
 
   app.use(require('morgan')('dev'));
@@ -28,7 +27,7 @@ module.exports = (app) => {
   });
 
   // error handler
-  app.use(function(error, req, res, next) {   
+  app.use(function(error, req, res, next) {
     if (error.status) {
       res.status(error.status).send({mensagem: error.message});
     } else {

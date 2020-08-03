@@ -1,30 +1,25 @@
 'use-strict';
 const User = require('../models/users');
 const service = require('../core/serviceJwt');
-const bcrypt = require('bcrypt');
 
 module.exports = async (req, res, next) => {
   try {
     const token = req.header('Authorization').split(' ')[1];
     const isValid = await service.authenticate(token);
-    let authorized = false; // default    
+    let authorized = false; // default
 
     req.user = isValid.id;
     req.ultimo_login = isValid.ultimo_login;
 
-    console.log(req.user);
 
-    await User.findOne({ '_id': req.user }).then(async user => {
-
-
+    await User.findOne({'_id': req.user}).then(async (user) => {
       if (user && user.token === token) {
         authorized = true; // Assign to authorized
-      } 
-
+      }
     })
-      .catch(err => {
-        throw err;
-      });
+        .catch((err) => {
+          throw err;
+        });
 
     // Authorized
     if (authorized) next();
