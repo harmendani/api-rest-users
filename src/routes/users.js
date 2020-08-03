@@ -19,11 +19,3 @@ module.exports = (app) => {
     route.use(auth);
     route.get('/:id', controller.buscarUsuarios);
 };
-
-/*
-// Availbles: Public Routes
-// Availbles : Private Routes
-router.use(authentication); // JWT
-router.get('/', controller.login); // Find user
-
-module.exports = router;*/

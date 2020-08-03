@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: true,
+        required: true,       
     },
     senha: {
         type: String,
@@ -81,5 +81,12 @@ UserSchema.method('signIn', async function (senha, token) {
     }
 
 })
+UserSchema.post('save', function(error, doc, next) {
+    if (error.name === 'MongoError' && error.code === 11000) {
+      next(new Error('E-mail já existente'));
+    } else {
+      next(error);
+    }
+  });
 
 module.exports = mongoose.model('Users', UserSchema);
