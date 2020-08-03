@@ -30,9 +30,7 @@ const UserSchema = new mongoose.Schema({
 
     data_atualizacao: { type: Date },
 
-    token: { type: String },
-
-    salt: {type: String},
+    token: { type: String },   
 
 }, { strict: true }, { versionKey: false },
 );
