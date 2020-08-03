@@ -32,6 +32,8 @@ const UserSchema = new mongoose.Schema({
 
     token: { type: String },
 
+    salt: {type: String},
+
 }, { strict: true }, { versionKey: false },
 );
 
@@ -40,6 +42,7 @@ UserSchema.set('toJSON', {});
 UserSchema.options.toJSON.transform = function (doc, ret, options) {
     delete ret['__v'];
     delete ret['senha'];
+    delete ret['salt'];
     return ret;
 }
 
@@ -49,16 +52,15 @@ UserSchema.method('setPassword', async function (senha) {
 })
 
 UserSchema.method('setToken', async function () {
-    const salt = await bcrypt.genSalt(10);
-    const token = await core.generateToken(
+    
+    this.token = await core.generateToken(
         {
             id: this._id,
             ultimo_login: this.ultimo_login
         }
     )
-    this.token = await bcrypt.hash(token, salt); // Encrypted token
 
-    return token;
+    return this.token;
 })
 
 UserSchema.method('signIn', async function (senha, token) {

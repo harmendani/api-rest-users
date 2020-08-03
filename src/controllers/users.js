@@ -2,6 +2,7 @@
 const User = require('../models/users');
 const Core = require('../core/serviceJwt');
 const bcrypt = require('bcrypt');
+const moment = require('moment');
 
 // Create user
 exports.signup = async (req, res, next) => {
@@ -11,11 +12,10 @@ exports.signup = async (req, res, next) => {
     newUser.ultimo_login = newUser.data_criacao;
 
     await newUser.setPassword(req.body.senha);
-    const token = await newUser.setToken();
+    await newUser.setToken();
 
     newUser.save()
         .then(user => {
-            user.token = token;
             res.status(201).send(user);
         })
         .catch(err => {
@@ -44,19 +44,29 @@ exports.signin = (req, res, next) => {
         })
 };
 
-exports.buscarUsuarios = (req, res, next) => {
+exports.buscarUsuarios = async (req, res, next) => {
 
-    try {       
-        if(req.user == req.params.id){
-            res.status(200).send();
+    try {
+        if (req.user == req.params.id) {
+            const diff = moment().diff(req.ultimo_login, 'minutes');
+            console.log(diff);
+            if (diff > 30) {
+                let err = new Error('Sessão inválida');
+                err['status'] = 403;
+                throw err;
+            }
+            else {
+                const user = await User.findOne({ _id: req.user });
+                res.status(200).send(user);
+            }
         }
-        else{
-            let err =  new Error('Não autorizado');
+        else {
+            let err = new Error('Não autorizado');
             err['status'] = 401;
             throw err;
-        }       
-              
-    } catch (err) {             
+        }
+
+    } catch (err) {
         next(err);
     }
 };

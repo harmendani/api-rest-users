@@ -12,10 +12,15 @@ module.exports = async (req, res, next) => {
     req.user = isValid.id;
     req.ultimo_login = isValid.ultimo_login;
 
+    console.log(req.user);
+
     await User.findOne({ '_id': req.user }).then(async user => {
 
-      if (user) { authorized = await bcrypt.compare(token, user.token); } // Assign to authorized
-      
+
+      if (user && user.token === token) {
+        authorized = true; // Assign to authorized
+      } 
+
     })
       .catch(err => {
         throw err;
