@@ -1,5 +1,5 @@
-# api-rest-users v0.1.0
-API RESTful for signin/signup users using Express, JWT and MongoDB.
+# api-rest-users
+![CodeQL](https://github.com/harmendani/api-rest-users/workflows/CodeQL/badge.svg?branch=master)
 
 # Run app
 
